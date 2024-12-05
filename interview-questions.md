@@ -1,4 +1,4 @@
-1. Clone the repo from git: 'insert url here'
+1. Clone the repo from https://github.com/leahhuettenmoser/smart-me-interview-task
     - You can refactor all provided code as much or as little as you want.
     - While solving the tasks, think about code quality, and document improvements you would make when given more time.
 2. Create a controller `CitiesController`.
