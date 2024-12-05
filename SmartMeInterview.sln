@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SwissCitiesApi", "SwissCitiesApi\SwissCitiesApi.csproj", "{05302BDD-2A70-4C65-8CEC-FD2DF40C1BDA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataSource", "DataSource\DataSource.csproj", "{5F23FF6D-64F9-4D01-9E3F-8E08CC76576A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{05302BDD-2A70-4C65-8CEC-FD2DF40C1BDA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{05302BDD-2A70-4C65-8CEC-FD2DF40C1BDA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{05302BDD-2A70-4C65-8CEC-FD2DF40C1BDA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{05302BDD-2A70-4C65-8CEC-FD2DF40C1BDA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5F23FF6D-64F9-4D01-9E3F-8E08CC76576A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5F23FF6D-64F9-4D01-9E3F-8E08CC76576A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5F23FF6D-64F9-4D01-9E3F-8E08CC76576A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5F23FF6D-64F9-4D01-9E3F-8E08CC76576A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

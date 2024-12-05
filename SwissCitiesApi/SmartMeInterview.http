@@ -1,0 +1,6 @@
+@SmartMeInterview_HostAddress = http://localhost:5108
+
+GET {{SmartMeInterview_HostAddress}}/api/Cantons/?cantonName=Zurich
+Accept: application/json
+
+###
