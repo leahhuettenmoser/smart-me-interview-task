@@ -3,7 +3,7 @@ using DataSource.DataStructures;
 
 namespace DataSource;
 
-public static class MockCantonRepository
+public static class InMemoryCantonRepository
 {
     private static readonly Dictionary<string, Canton> CantonCache = new();
 

@@ -16,7 +16,7 @@ public class CantonsController
     [HttpGet]
     public ActionResult<CantonDto> Get([FromQuery] string cantonName)
     {
-        return MockCantonRepository.Get(cantonName);
+        return InMemoryCantonRepository.Get(cantonName);
     }
 
     /// <summary>
@@ -27,6 +27,6 @@ public class CantonsController
     [HttpPut("[action]")]
     public ActionResult<CantonDto> UpdateCantonPopulation([FromBody] CantonDto updatedCanton)
     {
-        return MockCantonRepository.UpdatePopulations(updatedCanton);
+        return InMemoryCantonRepository.UpdatePopulations(updatedCanton);
     }
 }

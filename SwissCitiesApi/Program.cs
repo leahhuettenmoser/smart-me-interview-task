@@ -26,7 +26,7 @@ else
     app.UseHttpsRedirection();
 }
 
-MockCantonRepository.Initialize();
+InMemoryCantonRepository.Initialize();
 
 app.MapControllers();
 app.Run();
