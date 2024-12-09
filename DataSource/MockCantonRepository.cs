@@ -5,7 +5,9 @@ namespace DataSource;
 
 public static class MockCantonRepository
 {
-    private static Dictionary<string, Canton> _cantonCache = new();
+    private static readonly Dictionary<string, Canton> CantonCache = new();
+
+    private static readonly object TransactionLock = new();
 
     public static void Initialize()
     {
@@ -16,7 +18,7 @@ public static class MockCantonRepository
             var cityName = split[0];
             var cantonName = split[1];
             var population = uint.Parse(split[2]);
-            if (_cantonCache.TryGetValue(cantonName, out var canton))
+            if (CantonCache.TryGetValue(cantonName, out var canton))
             {
                 canton.Cities.Add(new City { Name = cityName, Population = population });
             }
@@ -28,7 +30,7 @@ public static class MockCantonRepository
                     TotalPopulation = 0,
                     Cities = [new City { Name = cityName, Population = population }]
                 };
-                _cantonCache.Add(cantonName, canton);
+                CantonCache.Add(cantonName, canton);
             }
         
             canton.TotalPopulation += population;
@@ -37,11 +39,14 @@ public static class MockCantonRepository
     
     public static CantonDto Get(string cantonName)
     {
-        if (!_cantonCache.TryGetValue(cantonName, out var canton))
+        lock (TransactionLock)
         {
-            throw new InvalidOperationException($"Canton {cantonName} does not exist.");
+            if (!CantonCache.TryGetValue(cantonName, out var canton))
+            {
+                throw new InvalidOperationException($"Canton {cantonName} does not exist.");
+            }
+            return new CantonDto(canton.Name, canton.TotalPopulation, canton.Cities.ToList());
         }
-        return new CantonDto(canton.Name, canton.TotalPopulation, canton.Cities.ToList());
     }
     
     /// <summary>
@@ -52,19 +57,22 @@ public static class MockCantonRepository
     /// <exception cref="InvalidOperationException">Throws when the canton does not exist.</exception>
     public static CantonDto UpdatePopulations(CantonDto updatedCanton)
     {
-        if (!_cantonCache.TryGetValue(updatedCanton.Name, out var canton))
+        lock (TransactionLock)
         {
-            throw new InvalidOperationException($"Canton {updatedCanton.Name} does not exist.");
-        }
-        
-        foreach (var city in canton.Cities)
-        {
-            city.Population = updatedCanton.Cities.First(c => c.Name == city.Name).Population;
-        }
-        canton.TotalPopulation = (uint)canton.Cities.Sum(x => x.Population);
+            if (!CantonCache.TryGetValue(updatedCanton.Name, out var canton))
+            {
+                throw new InvalidOperationException($"Canton {updatedCanton.Name} does not exist.");
+            }
+            
+            foreach (var city in canton.Cities)
+            {
+                city.Population = updatedCanton.Cities.First(c => c.Name == city.Name).Population;
+            }
+            canton.TotalPopulation = (uint)canton.Cities.Sum(x => x.Population);
 
-        _cantonCache[canton.Name] = canton;
-        
-        return new CantonDto(canton.Name, canton.TotalPopulation, canton.Cities.ToList());
+            CantonCache[canton.Name] = canton;
+            
+            return new CantonDto(canton.Name, canton.TotalPopulation, canton.Cities.ToList());
+        }
     }
 }
