@@ -1,4 +1,5 @@
-﻿using DataSource.DataStructures;
+﻿using System.Diagnostics;
+using DataSource.DataStructures;
 
 namespace DataSource;
 
@@ -14,7 +15,7 @@ public static class MockCantonRepository
             var split = line.Split(",");
             var cityName = split[0];
             var cantonName = split[1];
-            var population = int.Parse(split[2]);
+            var population = uint.Parse(split[2]);
             if (_cantonCache.TryGetValue(cantonName, out var canton))
             {
                 canton.Cities.Add(new City { Name = cityName, Population = population });
@@ -43,18 +44,24 @@ public static class MockCantonRepository
         return new CantonDto(canton.Name, canton.TotalPopulation, canton.Cities.ToList());
     }
     
+    /// <summary>
+    /// Updates the populations of all cities in a canton and the total population of the canton. 
+    /// </summary>
+    /// <param name="updatedCanton">A dto containing the info to the whole canton.</param>
+    /// <returns>The updated canton.</returns>
+    /// <exception cref="InvalidOperationException">Throws when the canton does not exist.</exception>
     public static CantonDto UpdatePopulations(CantonDto updatedCanton)
     {
         if (!_cantonCache.TryGetValue(updatedCanton.Name, out var canton))
         {
             throw new InvalidOperationException($"Canton {updatedCanton.Name} does not exist.");
         }
-
+        
         foreach (var city in canton.Cities)
         {
             city.Population = updatedCanton.Cities.First(c => c.Name == city.Name).Population;
         }
-        canton.TotalPopulation = updatedCanton.Population;
+        canton.TotalPopulation = (uint)canton.Cities.Sum(x => x.Population);
 
         _cantonCache[canton.Name] = canton;
         
